@@ -7,23 +7,20 @@ Easy Long Press Reordering for UITableView
 
 ## Example Usage
 
-Copy BVReorderTableView.h and BVReorderTableView.m files to your project 
+1. Copy BVReorderTableView.h and BVReorderTableView.m files to your project 
 
-Import BVReorderTableView.h in your header file of the view controller
+2. In the identity inspector of your storyboard file, change the class of your UITableView to BVReorderTableView. Optionally, create the BVReorderTableView yourself.
 
-```objective-c
-#import "BVReorderTableView.h"
-```
-
-In the identity inspector of your storyboard file, change the class of your UITableView to BVReorderTableView
-
-Implement the delegate methods in your view controller
+3. Implement the delegate methods in your view controller and update your tableView:cellForRowAtIndexPath: method to handle the empty row
 
 ```objective-c
-// This method is called when starting the re-ording process. You insert a blank row object into your
-// data source and return the object you want to save for later. This method is only called once.
+// This method is called when the long press gesture is triggered starting the re-ording process. 
+// You insert a blank row object into your data source and return the object you want to save for 
+// later. This method is only called once.
 - (id)saveObjectAndInsertBlankRowAtIndexPath:(NSIndexPath *)indexPath {
     id object = [_objects objectAtIndex:indexPath.row];
+    // Your dummy object can be something entirely different. It doesn't
+    // have to be a string.
     [_objects replaceObjectAtIndex:indexPath.row withObject:@"DUMMY"];
     return object;
 }
@@ -46,8 +43,6 @@ Implement the delegate methods in your view controller
     // do any additional cleanup here
 }
 ```
-
-Update your tableView:cellForRowAtIndexPath: method to handle the empty row
 
 ```objective-c
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -72,6 +67,8 @@ Update your tableView:cellForRowAtIndexPath: method to handle the empty row
     return cell;
 }
 ```
+
+See the ReorderTest demo project included with these files for a working example.
 
 ## Requirements
 

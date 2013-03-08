@@ -6,7 +6,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "BVReorderTableView.h"
 
 @interface MasterViewController : UITableViewController
 
