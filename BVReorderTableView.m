@@ -26,12 +26,14 @@
 
 @interface BVReorderTableView ()
 
+@property (nonatomic, strong) UILongPressGestureRecognizer *longPress;
 @property (nonatomic, strong) NSTimer *scrollingTimer;
 @property (nonatomic, assign) CGFloat scrollRate;
 @property (nonatomic, strong) NSIndexPath *currentLocationIndexPath;
 @property (nonatomic, strong) UIImageView *draggingView;
 @property (nonatomic, retain) id savedObject;
 
+- (void)initialize;
 - (void)longPress:(UILongPressGestureRecognizer *)gesture;
 - (void)updateCurrentLocation:(UILongPressGestureRecognizer *)gesture;
 - (void)scrollTableWithCell:(NSTimer *)timer;
@@ -42,51 +44,53 @@
 
 @implementation BVReorderTableView
 
-@dynamic delegate;
-@synthesize scrollingTimer, scrollRate, currentLocationIndexPath, draggingView, savedObject;
+@dynamic delegate, canReorder;
+@synthesize longPress, scrollingTimer, scrollRate, currentLocationIndexPath, draggingView, savedObject;
 
-- (id)init
-{
+- (id)init {
     self = [super init];
-    if (self)
-    {
-        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
-        [self addGestureRecognizer:longPress];
+    if (self) {
+        [self initialize];
     }
     return self;
 }
 
-- (id)initWithFrame:(CGRect)frame
-{
+- (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
-    if (self)
-    {
-        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
-        [self addGestureRecognizer:longPress];
+    if (self) {
+        [self initialize];
     }
     return self;
 }
 
-- (id)initWithCoder:(NSCoder *)coder
-{
+- (id)initWithCoder:(NSCoder *)coder {
     self = [super initWithCoder:coder];
-    if (self)
-    {
-        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
-        [self addGestureRecognizer:longPress];
+    if (self) {
+        [self initialize];
     }
     return self;
 }
 
-- (id)initWithFrame:(CGRect)frame style:(UITableViewStyle)style
-{
+- (id)initWithFrame:(CGRect)frame style:(UITableViewStyle)style {
     self = [super initWithFrame:frame style:style];
-    if (self)
-    {
-        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
-        [self addGestureRecognizer:longPress];
+    if (self) {
+        [self initialize];
     }
     return self;
+}
+
+
+- (void)initialize {
+    longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
+    [self addGestureRecognizer:longPress];
+    
+    self.canReorder = YES;
+}
+
+
+- (void)setCanReorder:(BOOL)canReorder {
+    canReorder = canReorder;
+    longPress.enabled = canReorder;
 }
 
 

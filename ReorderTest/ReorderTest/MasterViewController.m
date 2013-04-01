@@ -8,6 +8,7 @@
 
 #import "MasterViewController.h"
 #import "DetailViewController.h"
+#import "BVReorderTableView.h"
 
 @interface MasterViewController () {
     NSMutableArray *_objects;
@@ -45,6 +46,13 @@
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
+
+
+// This is an example of using the canReorder property of BVReorderTableView to toggle re-ordering.
+//- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+//    [super setEditing:editing animated:animated];
+//    ((BVReorderTableView *)self.tableView).canReorder = editing;
+//}
 
 #pragma mark - Table View
 

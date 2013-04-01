@@ -44,5 +44,6 @@
 @interface BVReorderTableView : UITableView
 
 @property (nonatomic, assign) id <ReorderTableViewDelegate> delegate;
+@property (nonatomic, assign) BOOL canReorder;
 
 @end
