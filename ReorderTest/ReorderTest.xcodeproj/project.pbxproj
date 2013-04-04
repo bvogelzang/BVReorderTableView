@@ -20,6 +20,7 @@
 		4551783C16EA9A4E003F168E /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4551783B16EA9A4E003F168E /* MasterViewController.m */; };
 		4551783F16EA9A4E003F168E /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4551783E16EA9A4E003F168E /* DetailViewController.m */; };
 		4551784716EA9AEF003F168E /* BVReorderTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4551784616EA9AEF003F168E /* BVReorderTableView.m */; };
+		45863AB0170D2EDF00CCA0C2 /* GroupedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45863AAF170D2EDF00CCA0C2 /* GroupedViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,8 @@
 		4551783E16EA9A4E003F168E /* DetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		4551784516EA9AEF003F168E /* BVReorderTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BVReorderTableView.h; sourceTree = "<group>"; };
 		4551784616EA9AEF003F168E /* BVReorderTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BVReorderTableView.m; sourceTree = "<group>"; };
+		45863AAE170D2EDF00CCA0C2 /* GroupedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupedViewController.h; sourceTree = "<group>"; };
+		45863AAF170D2EDF00CCA0C2 /* GroupedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupedViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +99,8 @@
 				4551783B16EA9A4E003F168E /* MasterViewController.m */,
 				4551783D16EA9A4E003F168E /* DetailViewController.h */,
 				4551783E16EA9A4E003F168E /* DetailViewController.m */,
+				45863AAE170D2EDF00CCA0C2 /* GroupedViewController.h */,
+				45863AAF170D2EDF00CCA0C2 /* GroupedViewController.m */,
 				4551784516EA9AEF003F168E /* BVReorderTableView.h */,
 				4551784616EA9AEF003F168E /* BVReorderTableView.m */,
 				4551782616EA9A4E003F168E /* Supporting Files */,
@@ -188,6 +193,7 @@
 				4551783C16EA9A4E003F168E /* MasterViewController.m in Sources */,
 				4551783F16EA9A4E003F168E /* DetailViewController.m in Sources */,
 				4551784716EA9AEF003F168E /* BVReorderTableView.m in Sources */,
+				45863AB0170D2EDF00CCA0C2 /* GroupedViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,6 +309,7 @@
 				4551784416EA9A4E003F168E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
