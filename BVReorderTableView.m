@@ -37,6 +37,7 @@
 - (void)longPress:(UILongPressGestureRecognizer *)gesture;
 - (void)updateCurrentLocation:(UILongPressGestureRecognizer *)gesture;
 - (void)scrollTableWithCell:(NSTimer *)timer;
+- (void)cancelGesture;
 
 @end
 
@@ -101,13 +102,14 @@
     
     int sections = [self numberOfSections];
     int rows = 0;
-    for(int i= 0; i < sections; i++) {
+    for(int i = 0; i < sections; i++) {
         rows += [self numberOfRowsInSection:i];
     }
     
     // get out of here if the long press was not on a valid row or our table is empty
     if (rows == 0 || (gesture.state == UIGestureRecognizerStateBegan && indexPath == nil) ||
         (gesture.state == UIGestureRecognizerStateEnded && self.currentLocationIndexPath == nil)) {
+        [self cancelGesture];
         return;
     }
     
@@ -227,6 +229,7 @@
 
 
 - (void)updateCurrentLocation:(UILongPressGestureRecognizer *)gesture {
+    
     NSIndexPath *indexPath  = nil;
     CGPoint location = CGPointZero;
     
@@ -266,6 +269,11 @@
     }
     
     [self updateCurrentLocation:gesture];
+}
+
+- (void)cancelGesture {
+    longPress.enabled = NO;
+    longPress.enabled = YES;
 }
 
 @end

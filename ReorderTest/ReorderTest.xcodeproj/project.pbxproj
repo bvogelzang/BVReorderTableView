@@ -19,8 +19,8 @@
 		4551783916EA9A4E003F168E /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4551783716EA9A4E003F168E /* MainStoryboard.storyboard */; };
 		4551783C16EA9A4E003F168E /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4551783B16EA9A4E003F168E /* MasterViewController.m */; };
 		4551783F16EA9A4E003F168E /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4551783E16EA9A4E003F168E /* DetailViewController.m */; };
-		4551784716EA9AEF003F168E /* BVReorderTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4551784616EA9AEF003F168E /* BVReorderTableView.m */; };
 		45863AB0170D2EDF00CCA0C2 /* GroupedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45863AAF170D2EDF00CCA0C2 /* GroupedViewController.m */; };
+		45A4825D17777DF300071C47 /* BVReorderTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45A4825C17777DF300071C47 /* BVReorderTableView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,10 +42,10 @@
 		4551783B16EA9A4E003F168E /* MasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MasterViewController.m; sourceTree = "<group>"; };
 		4551783D16EA9A4E003F168E /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		4551783E16EA9A4E003F168E /* DetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
-		4551784516EA9AEF003F168E /* BVReorderTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BVReorderTableView.h; sourceTree = "<group>"; };
-		4551784616EA9AEF003F168E /* BVReorderTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BVReorderTableView.m; sourceTree = "<group>"; };
 		45863AAE170D2EDF00CCA0C2 /* GroupedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupedViewController.h; sourceTree = "<group>"; };
 		45863AAF170D2EDF00CCA0C2 /* GroupedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupedViewController.m; sourceTree = "<group>"; };
+		45A4825B17777DF300071C47 /* BVReorderTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BVReorderTableView.h; path = ../../BVReorderTableView.h; sourceTree = "<group>"; };
+		45A4825C17777DF300071C47 /* BVReorderTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BVReorderTableView.m; path = ../../BVReorderTableView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,8 +101,8 @@
 				4551783E16EA9A4E003F168E /* DetailViewController.m */,
 				45863AAE170D2EDF00CCA0C2 /* GroupedViewController.h */,
 				45863AAF170D2EDF00CCA0C2 /* GroupedViewController.m */,
-				4551784516EA9AEF003F168E /* BVReorderTableView.h */,
-				4551784616EA9AEF003F168E /* BVReorderTableView.m */,
+				45A4825B17777DF300071C47 /* BVReorderTableView.h */,
+				45A4825C17777DF300071C47 /* BVReorderTableView.m */,
 				4551782616EA9A4E003F168E /* Supporting Files */,
 			);
 			path = ReorderTest;
@@ -192,8 +192,8 @@
 				4551783016EA9A4E003F168E /* AppDelegate.m in Sources */,
 				4551783C16EA9A4E003F168E /* MasterViewController.m in Sources */,
 				4551783F16EA9A4E003F168E /* DetailViewController.m in Sources */,
-				4551784716EA9AEF003F168E /* BVReorderTableView.m in Sources */,
 				45863AB0170D2EDF00CCA0C2 /* GroupedViewController.m in Sources */,
+				45A4825D17777DF300071C47 /* BVReorderTableView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
