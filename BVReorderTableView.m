@@ -171,14 +171,16 @@
         }
         
         CGRect rect = self.bounds;
+        // adjust rect for content inset as we will use it below for calculating scroll zones
+        rect.size.height -= self.contentInset.top;
         CGPoint location = [gesture locationInView:self];
 
         [self updateCurrentLocation:gesture];
         
         // tell us if we should scroll and which direction
         CGFloat scrollZoneHeight = rect.size.height / 6;
-        CGFloat bottomScrollBeginning = self.contentOffset.y + rect.size.height - scrollZoneHeight;
-        CGFloat topScrollBeginning = self.contentOffset.y + scrollZoneHeight;
+        CGFloat bottomScrollBeginning = self.contentOffset.y + self.contentInset.top + rect.size.height - scrollZoneHeight;
+        CGFloat topScrollBeginning = self.contentOffset.y + self.contentInset.top  + scrollZoneHeight;
         // we're in the bottom zone
         if (location.y >= bottomScrollBeginning) {
             self.scrollRate = (location.y - bottomScrollBeginning) / scrollZoneHeight;
@@ -254,8 +256,9 @@
     
     CGPoint currentOffset = self.contentOffset;
     CGPoint newOffset = CGPointMake(currentOffset.x, currentOffset.y + self.scrollRate);
-    if (newOffset.y < 0) {
-        newOffset.y = 0;
+
+    if (newOffset.y < -self.contentInset.top) {
+        newOffset.y = -self.contentInset.top;
     } else if (self.contentSize.height < self.frame.size.height) {
         newOffset = currentOffset;
     } else if (newOffset.y > self.contentSize.height - self.frame.size.height) {
