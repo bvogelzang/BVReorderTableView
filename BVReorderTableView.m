@@ -85,6 +85,9 @@
     longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
     [self addGestureRecognizer:longPress];
     
+    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
+    [self addGestureRecognizer:tapRecognizer];
+    
     self.canReorder = YES;
 }
 
@@ -92,6 +95,14 @@
 - (void)setCanReorder:(BOOL)canReorder {
     canReorder = canReorder;
     longPress.enabled = canReorder;
+}
+
+
+- (void)tapped:(UITapGestureRecognizer *)gesture {
+    
+    CGPoint location = [gesture locationInView:self];
+    NSIndexPath *indexPath = [self indexPathForRowAtPoint:location];
+    [self.delegate tableView:self didSelectRowAtIndex:indexPath];
 }
 
 
