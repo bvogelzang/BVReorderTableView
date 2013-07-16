@@ -102,9 +102,9 @@
     
     CGPoint location = [gesture locationInView:self];
     NSIndexPath *indexPath = [self indexPathForRowAtPoint:location];
-    [self.delegate tableView:self didSelectRowAtIndex:indexPath];
+    [self.delegate tableView:self didSelectRowAtIndexPath:indexPath];
 }
-
+    
 
 - (void)longPress:(UILongPressGestureRecognizer *)gesture {
     
