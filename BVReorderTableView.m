@@ -30,6 +30,7 @@
 @property (nonatomic, strong) NSTimer *scrollingTimer;
 @property (nonatomic, assign) CGFloat scrollRate;
 @property (nonatomic, strong) NSIndexPath *currentLocationIndexPath;
+@property (nonatomic, strong) NSIndexPath *initialIndexPath;
 @property (nonatomic, strong) UIImageView *draggingView;
 @property (nonatomic, retain) id savedObject;
 
@@ -46,7 +47,14 @@
 @implementation BVReorderTableView
 
 @dynamic delegate, canReorder;
-@synthesize longPress, scrollingTimer, scrollRate, currentLocationIndexPath, draggingView, savedObject;
+@synthesize longPress;
+@synthesize scrollingTimer;
+@synthesize scrollRate;
+@synthesize currentLocationIndexPath;
+@synthesize draggingView;
+@synthesize savedObject;
+@synthesize draggingRowHeight;
+@synthesize initialIndexPath;
 
 - (id)init {
     return [self initWithFrame:CGRectZero];
@@ -109,6 +117,7 @@
     if (gesture.state == UIGestureRecognizerStateBegan) {
         
         UITableViewCell *cell = [self cellForRowAtIndexPath:indexPath];
+        self.draggingRowHeight = cell.frame.size.height;
         [cell setSelected:NO animated:NO];
         [cell setHighlighted:NO animated:NO];
         
@@ -146,6 +155,7 @@
         [self insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
         self.savedObject = [self.delegate saveObjectAndInsertBlankRowAtIndexPath:indexPath];
         self.currentLocationIndexPath = indexPath;
+        self.initialIndexPath = indexPath;
         [self endUpdates];
         
         // enable scrolling for cell
@@ -231,7 +241,14 @@
     location  = [gesture locationInView:self];
     indexPath = [self indexPathForRowAtPoint:location];
     
-    if (indexPath && ![indexPath isEqual:self.currentLocationIndexPath]) {
+    if ([self.delegate respondsToSelector:@selector(tableView:targetIndexPathForMoveFromRowAtIndexPath:toProposedIndexPath:)]) {
+        indexPath = [self.delegate tableView:self targetIndexPathForMoveFromRowAtIndexPath:self.initialIndexPath toProposedIndexPath:indexPath];
+    }
+    
+    NSInteger oldHeight = [self rectForRowAtIndexPath:self.currentLocationIndexPath].size.height;
+    NSInteger newHeight = [self rectForRowAtIndexPath:indexPath].size.height;
+    
+    if (indexPath && ![indexPath isEqual:self.currentLocationIndexPath] && [gesture locationInView:[self cellForRowAtIndexPath:indexPath]].y > newHeight - oldHeight) {
         [self beginUpdates];
         [self deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.currentLocationIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         [self insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
