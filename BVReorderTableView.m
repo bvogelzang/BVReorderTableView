@@ -49,19 +49,11 @@
 @synthesize longPress, scrollingTimer, scrollRate, currentLocationIndexPath, draggingView, savedObject;
 
 - (id)init {
-    self = [super init];
-    if (self) {
-        [self initialize];
-    }
-    return self;
+    return [self initWithFrame:CGRectZero];
 }
 
 - (id)initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
-    if (self) {
-        [self initialize];
-    }
-    return self;
+    return [self initWithFrame:frame style:UITableViewStylePlain];
 }
 
 - (id)initWithCoder:(NSCoder *)coder {
