@@ -82,8 +82,10 @@
 
 
 - (void)initialize {
-    longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
-    [self addGestureRecognizer:longPress];
+    if (!longPress) {
+        longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
+        [self addGestureRecognizer:longPress];
+    }
     
     self.canReorder = YES;
 }
