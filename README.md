@@ -1,21 +1,21 @@
 BVReorderTableView
 ==================
 
-Easy Long Press Reordering for UITableView
+Easy Long Press Reordering for UITableView. Created for and used in my new app [PRAYERFUL](http://www.vogelzangsoftware.com/prayerful).
 
 ![Example](https://raw.github.com/bvogelzang/BVReorderTableView/master/Screenshot1.png)
 
 ## Example Usage
 
-1. Copy BVReorderTableView.h and BVReorderTableView.m files to your project 
+1. Copy BVReorderTableView.h and BVReorderTableView.m files to your project
 
 2. In the identity inspector of your storyboard file, change the class of your UITableView to BVReorderTableView. Optionally, create the BVReorderTableView yourself.
 
 3. Implement the delegate methods in your view controller and update your tableView:cellForRowAtIndexPath: method to handle the empty row
 
 ```objective-c
-// This method is called when the long press gesture is triggered starting the re-ording process. 
-// You insert a blank row object into your data source and return the object you want to save for 
+// This method is called when the long press gesture is triggered starting the re-ording process.
+// You insert a blank row object into your data source and return the object you want to save for
 // later. This method is only called once.
 - (id)saveObjectAndInsertBlankRowAtIndexPath:(NSIndexPath *)indexPath {
     id object = [_objects objectAtIndex:indexPath.row];
@@ -63,7 +63,7 @@ Easy Long Press Reordering for UITableView
         cell.textLabel.text = [object description];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
-    
+
     return cell;
 }
 ```
