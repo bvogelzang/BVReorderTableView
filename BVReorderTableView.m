@@ -157,6 +157,9 @@
         if ([self.delegate respondsToSelector:@selector(saveObjectAndInsertBlankRowAtIndexPath:)]) {
             self.savedObject = [self.delegate saveObjectAndInsertBlankRowAtIndexPath:indexPath];
         }
+        else {
+            NSLog(@"saveObjectAndInsertBlankRowAtIndexPath: is not implemented");
+        }
         
         self.currentLocationIndexPath = indexPath;
         self.initialIndexPath = indexPath;
@@ -226,6 +229,9 @@
                              {
                                  [self.delegate finishReorderingWithObject:self.savedObject atIndexPath:indexPath];
                              }
+                             else {
+                                 NSLog(@"finishReorderingWithObject:atIndexPath: is not implemented");
+                             }
                              [self endUpdates];
                              
                              // reload the rows that were affected just to be safe
@@ -263,6 +269,9 @@
         
         if ([self.delegate respondsToSelector:@selector(moveRowAtIndexPath:toIndexPath:)]) {
             [self.delegate moveRowAtIndexPath:self.currentLocationIndexPath toIndexPath:indexPath];
+        }
+        else {
+            NSLog(@"moveRowAtIndexPath:toIndexPath: is not implemented");
         }
         
         self.currentLocationIndexPath = indexPath;
