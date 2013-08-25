@@ -245,7 +245,6 @@
     }
 }
 
-
 - (void)updateCurrentLocation:(UILongPressGestureRecognizer *)gesture {
     
     NSIndexPath *indexPath  = nil;
@@ -254,26 +253,43 @@
     // refresh index path
     location  = [gesture locationInView:self];
     indexPath = [self indexPathForRowAtPoint:location];
+    BOOL placeholder = NO;
+    if (indexPath == nil)
+    {
+        NSInteger numSections = [self numberOfSections];
+        for (int i = 0; i < numSections; i++)
+        {
+            CGRect rect = [self rectForHeaderInSection:i];
+            if (CGRectContainsPoint(rect, location))
+            {
+                indexPath = [NSIndexPath indexPathForRow:0 inSection:i];
+                placeholder = YES;
+            }
+            
+            if (indexPath == nil)
+            {
+                CGRect rect = [self rectForFooterInSection:i];
+                if (CGRectContainsPoint(rect, location))
+                {
+                    indexPath = [NSIndexPath indexPathForRow:0 inSection:i];
+                    placeholder = YES;
+                }
+            }
+        }
+    }
     
     if ([self.delegate respondsToSelector:@selector(tableView:targetIndexPathForMoveFromRowAtIndexPath:toProposedIndexPath:)]) {
         indexPath = [self.delegate tableView:self targetIndexPathForMoveFromRowAtIndexPath:self.initialIndexPath toProposedIndexPath:indexPath];
     }
     
-    NSInteger oldHeight = [self rectForRowAtIndexPath:self.currentLocationIndexPath].size.height;
-    NSInteger newHeight = [self rectForRowAtIndexPath:indexPath].size.height;
+    NSInteger oldHeight = !placeholder ? [self rectForRowAtIndexPath:self.currentLocationIndexPath].size.height : 40;
+    NSInteger newHeight = !placeholder ? [self rectForRowAtIndexPath:indexPath].size.height : 40;
     
     if (indexPath && ![indexPath isEqual:self.currentLocationIndexPath] && [gesture locationInView:[self cellForRowAtIndexPath:indexPath]].y > newHeight - oldHeight) {
         [self beginUpdates];
         [self deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.currentLocationIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         [self insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-        
-        if ([self.delegate respondsToSelector:@selector(moveRowAtIndexPath:toIndexPath:)]) {
-            [self.delegate moveRowAtIndexPath:self.currentLocationIndexPath toIndexPath:indexPath];
-        }
-        else {
-            NSLog(@"moveRowAtIndexPath:toIndexPath: is not implemented");
-        }
-        
+        [self.delegate moveRowAtIndexPath:self.currentLocationIndexPath toIndexPath:indexPath];
         self.currentLocationIndexPath = indexPath;
         [self endUpdates];
     }
