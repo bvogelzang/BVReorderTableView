@@ -255,7 +255,7 @@
     indexPath = [self indexPathForRowAtPoint:location];
     
     // if indexPath is nil then table cell has likely been dragged to an empty section. Use the section header and/or footer
-    // to determine drag location. An even better solution would be to use the y-offset and calculate the location of the empty section
+    // to determine drag location.
     BOOL placeholder = NO;
     CGFloat placeholderHeight = 44;
     if (indexPath == nil)
@@ -285,7 +285,14 @@
         [self beginUpdates];
         [self deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.currentLocationIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         [self insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-        [self.delegate moveRowAtIndexPath:self.currentLocationIndexPath toIndexPath:indexPath];
+        
+        if ([self.delegate respondsToSelector:@selector(moveRowAtIndexPath:toIndexPath:)]) {
+            [self.delegate moveRowAtIndexPath:self.currentLocationIndexPath toIndexPath:indexPath];
+        }
+        else {
+            NSLog(@"moveRowAtIndexPath:toIndexPath: is not implemented");
+        }
+        
         self.currentLocationIndexPath = indexPath;
         [self endUpdates];
     }
