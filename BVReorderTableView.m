@@ -253,27 +253,23 @@
     // refresh index path
     location  = [gesture locationInView:self];
     indexPath = [self indexPathForRowAtPoint:location];
+    
+    // if indexPath is nil then table cell has likely been dragged to an empty section. Use the section header and/or footer
+    // to determine drag location. An even better solution would be to use the y-offset and calculate the location of the empty section
     BOOL placeholder = NO;
+    CGFloat placeholderHeight = 44;
     if (indexPath == nil)
     {
         NSInteger numSections = [self numberOfSections];
         for (int i = 0; i < numSections; i++)
         {
-            CGRect rect = [self rectForHeaderInSection:i];
-            if (CGRectContainsPoint(rect, location))
+            CGRect headerRect = [self rectForHeaderInSection:i];
+            CGRect footerRect = [self rectForFooterInSection:i];
+            if (CGRectContainsPoint(headerRect, location) || CGRectContainsPoint(footerRect, location))
             {
+                // The dragged table cell is definitely in the vicinity of an empty section. Create a new indexPath in the empty section (row 0)
                 indexPath = [NSIndexPath indexPathForRow:0 inSection:i];
                 placeholder = YES;
-            }
-            
-            if (indexPath == nil)
-            {
-                CGRect rect = [self rectForFooterInSection:i];
-                if (CGRectContainsPoint(rect, location))
-                {
-                    indexPath = [NSIndexPath indexPathForRow:0 inSection:i];
-                    placeholder = YES;
-                }
             }
         }
     }
@@ -282,8 +278,8 @@
         indexPath = [self.delegate tableView:self targetIndexPathForMoveFromRowAtIndexPath:self.initialIndexPath toProposedIndexPath:indexPath];
     }
     
-    NSInteger oldHeight = !placeholder ? [self rectForRowAtIndexPath:self.currentLocationIndexPath].size.height : 40;
-    NSInteger newHeight = !placeholder ? [self rectForRowAtIndexPath:indexPath].size.height : 40;
+    NSInteger oldHeight = !placeholder ? [self rectForRowAtIndexPath:self.currentLocationIndexPath].size.height : placeholderHeight;
+    NSInteger newHeight = !placeholder ? [self rectForRowAtIndexPath:indexPath].size.height : placeholderHeight;
     
     if (indexPath && ![indexPath isEqual:self.currentLocationIndexPath] && [gesture locationInView:[self cellForRowAtIndexPath:indexPath]].y > newHeight - oldHeight) {
         [self beginUpdates];
