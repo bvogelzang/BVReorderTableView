@@ -27,7 +27,7 @@
 @interface BVReorderTableView ()
 
 @property (nonatomic, strong) UILongPressGestureRecognizer *longPress;
-@property (nonatomic, strong) NSTimer *scrollingTimer;
+@property (nonatomic, strong) CADisplayLink *scrollDisplayLink;
 @property (nonatomic, assign) CGFloat scrollRate;
 @property (nonatomic, strong) NSIndexPath *currentLocationIndexPath;
 @property (nonatomic, strong) NSIndexPath *initialIndexPath;
@@ -48,7 +48,7 @@
 
 @dynamic delegate, canReorder;
 @synthesize longPress;
-@synthesize scrollingTimer;
+@synthesize scrollDisplayLink;
 @synthesize scrollRate;
 @synthesize currentLocationIndexPath;
 @synthesize draggingView;
@@ -170,10 +170,8 @@
         [self endUpdates];
         
         // enable scrolling for cell
-        NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithObject:gesture forKey:@"gesture"];
-        self.scrollingTimer = [NSTimer timerWithTimeInterval:1/8 target:self selector:@selector(scrollTableWithCell:) userInfo:userInfo repeats:YES];
-        [[NSRunLoop mainRunLoop] addTimer:self.scrollingTimer forMode:NSDefaultRunLoopMode];
-        
+        self.scrollDisplayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(scrollTableWithCell:)];
+        [self.scrollDisplayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];        
     }
     // dragging
     else if (gesture.state == UIGestureRecognizerStateChanged) {
@@ -211,9 +209,9 @@
         
         NSIndexPath *indexPath = self.currentLocationIndexPath;
         
-        // remove scrolling timer
-        [self.scrollingTimer invalidate];
-        self.scrollingTimer = nil;
+        // remove scrolling CADisplayLink
+        [self.scrollDisplayLink invalidate];
+        self.scrollDisplayLink = nil;
         self.scrollRate = 0;
         
         // animate the drag view to the newly hovered cell
@@ -283,13 +281,12 @@
     }
 }
 
-- (void)scrollTableWithCell:(NSTimer *)timer {
-    
-    UILongPressGestureRecognizer *gesture = [timer.userInfo objectForKey:@"gesture"];
+- (void)scrollTableWithCell:(NSTimer *)timer {    
+    UILongPressGestureRecognizer *gesture = self.longPress;
     CGPoint location  = [gesture locationInView:self];
     
     CGPoint currentOffset = self.contentOffset;
-    CGPoint newOffset = CGPointMake(currentOffset.x, currentOffset.y + self.scrollRate);
+    CGPoint newOffset = CGPointMake(currentOffset.x, currentOffset.y + self.scrollRate * 10);
     
     if (newOffset.y < -self.contentInset.top) {
         newOffset.y = -self.contentInset.top;
@@ -297,8 +294,8 @@
         newOffset = currentOffset;
     } else if (newOffset.y > self.contentSize.height - self.frame.size.height) {
         newOffset.y = self.contentSize.height - self.frame.size.height;
-    } else {
     }
+    
     [self setContentOffset:newOffset];
     
     if (location.y >= 0 && location.y <= self.contentSize.height + 50) {
