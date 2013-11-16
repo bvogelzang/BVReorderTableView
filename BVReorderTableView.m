@@ -54,6 +54,7 @@
 @synthesize draggingView;
 @synthesize savedObject;
 @synthesize draggingRowHeight;
+@synthesize draggingViewOpacity;
 @synthesize initialIndexPath;
 
 - (id)init {
@@ -86,6 +87,7 @@
     [self addGestureRecognizer:longPress];
     
     self.canReorder = YES;
+    self.draggingViewOpacity = 1.0;
 }
 
 
@@ -145,7 +147,7 @@
             draggingView.layer.shadowOffset = CGSizeMake(0, 0);
             draggingView.layer.shadowRadius = 4.0;
             draggingView.layer.shadowOpacity = 0.7;
-            //draggingView.layer.opacity = 0.8;
+            draggingView.layer.opacity = self.draggingViewOpacity;
             
             // zoom image towards user
             [UIView beginAnimations:@"zoom" context:nil];
