@@ -45,6 +45,7 @@
 
 @property (nonatomic, assign) id <ReorderTableViewDelegate> delegate;
 @property (nonatomic, assign) CGFloat draggingRowHeight;
+@property (nonatomic, assign) CGFloat draggingViewOpacity;
 @property (nonatomic, assign) BOOL canReorder;
 
 @end
