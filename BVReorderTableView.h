@@ -24,6 +24,13 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol ReorderTableViewDataSource <UITableViewDataSource>
+
+// TODO: Description of this delegate method
+- (BOOL)canMoveRowFromIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath;
+
+@end
+
 @protocol ReorderTableViewDelegate <UITableViewDelegate>
 
 // This method is called when starting the re-ording process. You insert a blank row object into your
@@ -44,6 +51,7 @@
 @interface BVReorderTableView : UITableView
 
 @property (nonatomic, assign) id <ReorderTableViewDelegate> delegate;
+@property (nonatomic, assign) id <ReorderTableViewDataSource> dataSource;
 @property (nonatomic, assign) CGFloat draggingRowHeight;
 @property (nonatomic, assign) CGFloat draggingViewOpacity;
 @property (nonatomic, assign) BOOL canReorder;
