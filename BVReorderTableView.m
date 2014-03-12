@@ -102,9 +102,9 @@
     CGPoint location = [gesture locationInView:self];
     NSIndexPath *indexPath = [self indexPathForRowAtPoint:location];
     
-    int sections = [self numberOfSections];
-    int rows = 0;
-    for(int i = 0; i < sections; i++) {
+    NSInteger sections = [self numberOfSections];
+    NSInteger rows = 0;
+    for(NSInteger i = 0; i < sections; i++) {
         rows += [self numberOfRowsInSection:i];
     }
     
@@ -188,7 +188,6 @@
         CGRect rect = self.bounds;
         // adjust rect for content inset as we will use it below for calculating scroll zones
         rect.size.height -= self.contentInset.top;
-        CGPoint location = [gesture locationInView:self];
         
         [self updateCurrentLocation:gesture];
         
@@ -211,7 +210,7 @@
     // dropped
     else if (gesture.state == UIGestureRecognizerStateEnded) {
         
-        NSIndexPath *indexPath = self.currentLocationIndexPath;
+        indexPath = self.currentLocationIndexPath;
         
         // remove scrolling CADisplayLink
         [self.scrollDisplayLink invalidate];
