@@ -104,7 +104,7 @@
     
     int sections = [self numberOfSections];
     int rows = 0;
-    for(int i = 0; i < sections; i++) {
+    for (int i = 0; i < sections; i++) {
         rows += [self numberOfRowsInSection:i];
     }
     
