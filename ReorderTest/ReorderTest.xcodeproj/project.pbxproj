@@ -21,6 +21,7 @@
 		4551783F16EA9A4E003F168E /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4551783E16EA9A4E003F168E /* DetailViewController.m */; };
 		45863AB0170D2EDF00CCA0C2 /* GroupedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45863AAF170D2EDF00CCA0C2 /* GroupedViewController.m */; };
 		45A4825D17777DF300071C47 /* BVReorderTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45A4825C17777DF300071C47 /* BVReorderTableView.m */; };
+		59133D1E18F046CE002C0C3D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59133D1D18F046CE002C0C3D /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		45863AAF170D2EDF00CCA0C2 /* GroupedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupedViewController.m; sourceTree = "<group>"; };
 		45A4825B17777DF300071C47 /* BVReorderTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BVReorderTableView.h; path = ../../BVReorderTableView.h; sourceTree = "<group>"; };
 		45A4825C17777DF300071C47 /* BVReorderTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BVReorderTableView.m; path = ../../BVReorderTableView.m; sourceTree = "<group>"; };
+		59133D1D18F046CE002C0C3D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				59133D1E18F046CE002C0C3D /* QuartzCore.framework in Frameworks */,
 				4551782016EA9A4E003F168E /* UIKit.framework in Frameworks */,
 				4551782216EA9A4E003F168E /* Foundation.framework in Frameworks */,
 				4551782416EA9A4E003F168E /* CoreGraphics.framework in Frameworks */,
@@ -82,6 +85,7 @@
 		4551781E16EA9A4E003F168E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				59133D1D18F046CE002C0C3D /* QuartzCore.framework */,
 				4551781F16EA9A4E003F168E /* UIKit.framework */,
 				4551782116EA9A4E003F168E /* Foundation.framework */,
 				4551782316EA9A4E003F168E /* CoreGraphics.framework */,
