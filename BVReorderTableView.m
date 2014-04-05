@@ -186,7 +186,6 @@
         CGRect rect = self.bounds;
         // adjust rect for content inset as we will use it below for calculating scroll zones
         rect.size.height -= self.contentInset.top;
-        CGPoint location = [gesture locationInView:self];
         
         [self updateCurrentLocation:gesture];
         
