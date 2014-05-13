@@ -102,9 +102,9 @@
     CGPoint location = [gesture locationInView:self];
     NSIndexPath *indexPath = [self indexPathForRowAtPoint:location];
     
-    int sections = [self numberOfSections];
-    int rows = 0;
-    for(int i = 0; i < sections; i++) {
+    NSInteger sections = [self numberOfSections];
+    NSInteger rows = 0;
+    for(NSInteger i = 0; i < sections; i++) {
         rows += [self numberOfRowsInSection:i];
     }
     
@@ -130,6 +130,7 @@
         
         // make an image from the pressed tableview cell
         UIGraphicsBeginImageContextWithOptions(cell.bounds.size, NO, 0);
+        cell.highlighted = YES;
         [cell.layer renderInContext:UIGraphicsGetCurrentContext()];
         UIImage *cellImage = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
@@ -145,8 +146,9 @@
             draggingView.layer.masksToBounds = NO;
             draggingView.layer.shadowColor = [[UIColor blackColor] CGColor];
             draggingView.layer.shadowOffset = CGSizeMake(0, 0);
-            draggingView.layer.shadowRadius = 4.0;
-            draggingView.layer.shadowOpacity = 0.7;
+            draggingView.layer.shadowRadius = 6.0;
+            draggingView.layer.shadowOpacity = 0.6;
+            draggingView.layer.shadowPath = [UIBezierPath bezierPathWithRect:draggingView.bounds].CGPath;
             draggingView.layer.opacity = self.draggingViewOpacity;
             
             // zoom image towards user
@@ -186,7 +188,6 @@
         CGRect rect = self.bounds;
         // adjust rect for content inset as we will use it below for calculating scroll zones
         rect.size.height -= self.contentInset.top;
-        CGPoint location = [gesture locationInView:self];
         
         [self updateCurrentLocation:gesture];
         
@@ -209,7 +210,7 @@
     // dropped
     else if (gesture.state == UIGestureRecognizerStateEnded) {
         
-        NSIndexPath *indexPath = self.currentLocationIndexPath;
+        indexPath = self.currentLocationIndexPath;
         
         // remove scrolling CADisplayLink
         [self.scrollDisplayLink invalidate];
@@ -223,7 +224,11 @@
                              draggingView.transform = CGAffineTransformIdentity;
                              draggingView.frame = CGRectOffset(draggingView.bounds, rect.origin.x, rect.origin.y);
                          } completion:^(BOOL finished) {
-                             [draggingView removeFromSuperview];
+                             [UIView animateWithDuration:0.5 animations:^{
+                                 draggingView.alpha = 0;
+                             } completion:^(BOOL finished2) {
+                                 [draggingView removeFromSuperview];
+                             }];
                              
                              [self beginUpdates];
                              [self deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
@@ -242,6 +247,10 @@
                              NSMutableArray *visibleRows = [[self indexPathsForVisibleRows] mutableCopy];
                              [visibleRows removeObject:indexPath];
                              [self reloadRowsAtIndexPaths:visibleRows withRowAnimation:UITableViewRowAnimationNone];
+                             
+                             UITableViewCell *cell = [self cellForRowAtIndexPath:indexPath];
+                             cell.highlighted = YES;
+                             [cell setHighlighted:NO animated:YES];
                              
                              self.currentLocationIndexPath = nil;
                              self.draggingView = nil;
