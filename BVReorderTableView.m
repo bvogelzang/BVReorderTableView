@@ -33,6 +33,7 @@
 @property (nonatomic, strong) NSIndexPath* currentLocationIndexPath;
 @property (nonatomic, strong) NSIndexPath* initialIndexPath;
 @property (nonatomic, strong) UIImageView* draggingView;
+@property (nonatomic, assign) CGFloat draggingShiftY;
 @property (nonatomic, retain) id savedObject;
 
 - (void)initialize;
@@ -41,10 +42,13 @@
 - (void)updateCurrentLocation:(UIGestureRecognizer*)gesture;
 - (void)scrollTableWithCell:(NSTimer*)timer;
 - (void)cancelGesture;
+- (CGRect)getDraggingViewFrameByCurrentLocation:(CGPoint)location;
 
 @end
 
 @implementation BVReorderTableView
+
+static float const DRAGGIN_VIEW_SCALE = 1.1f;
 
 @dynamic delegate, canReorder;
 @synthesize scrollDisplayLink;
@@ -164,11 +168,13 @@
 
     // started
     if (gesture.state == UIGestureRecognizerStateBegan) {
-
         UITableViewCell* cell = [self cellForRowAtIndexPath:indexPath];
         self.draggingRowHeight = cell.frame.size.height;
         [cell setSelected:NO animated:NO];
         [cell setHighlighted:NO animated:NO];
+
+        self.draggingShiftY = [gesture locationInView:cell.contentView].y;
+        NSLog(@"draggingShiftY=%f", self.draggingShiftY);
 
         // make an image from the pressed tableview cell
         UIGraphicsBeginImageContextWithOptions(cell.bounds.size, NO, 0);
@@ -179,7 +185,6 @@
         // create and image view that we will drag around the screen
         if (!draggingView) {
             draggingView = [[UIImageView alloc] initWithImage:cellImage];
-            [self addSubview:draggingView];
             CGRect rect = [self rectForRowAtIndexPath:indexPath];
             draggingView.frame = CGRectOffset(draggingView.bounds, rect.origin.x, rect.origin.y);
 
@@ -191,10 +196,12 @@
             draggingView.layer.shadowOpacity = 0.7;
             draggingView.layer.opacity = self.draggingViewOpacity;
 
+            [self addSubview:draggingView];
+
             // zoom image towards user
             [UIView beginAnimations:@"zoom" context:nil];
-            draggingView.transform = CGAffineTransformMakeScale(1.1, 1.1);
-            draggingView.center = CGPointMake(self.center.x, location.y);
+            draggingView.transform = CGAffineTransformMakeScale(DRAGGIN_VIEW_SCALE, DRAGGIN_VIEW_SCALE);
+            draggingView.frame = [self getDraggingViewFrameByCurrentLocation:location];
             [UIView commitAnimations];
         }
 
@@ -221,7 +228,7 @@
         // update position of the drag view
         // don't let it go past the top or the bottom too far
         if (location.y >= 0 && location.y <= self.contentSize.height + 50) {
-            draggingView.center = CGPointMake(self.center.x, location.y);
+            draggingView.frame = [self getDraggingViewFrameByCurrentLocation:location];
         }
 
         CGRect rect = self.bounds;
@@ -264,28 +271,28 @@
                              draggingView.frame = CGRectOffset(draggingView.bounds, rect.origin.x, rect.origin.y);
             }
             completion:^(BOOL finished) {
-                [draggingView removeFromSuperview];
-                
-                [self beginUpdates];
-                [self deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
-                [self insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
-                
-                if ([self.delegate respondsToSelector:@selector(finishReorderingWithObject:atIndexPath:)]) {
-                        [self.delegate finishReorderingWithObject:self.savedObject atIndexPath:indexPath];
-                } else {
-                    NSLog(@"finishReorderingWithObject:atIndexPath: is not implemented");
-                }
-                [self endUpdates];
+                             [draggingView removeFromSuperview];
                              
-                // reload the rows that were affected just to be safe
-                NSMutableArray *visibleRows = [[self indexPathsForVisibleRows] mutableCopy];
-                [visibleRows removeObject:indexPath];
-                [self reloadRowsAtIndexPaths:visibleRows withRowAnimation:UITableViewRowAnimationNone];
+                             [self beginUpdates];
+                             [self deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                             [self insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
                              
-                self.currentLocationIndexPath = nil;
-                self.draggingView = nil;
-                
-                self.currentGesture = nil;
+                             if ([self.delegate respondsToSelector:@selector(finishReorderingWithObject:atIndexPath:)]) {
+                                 [self.delegate finishReorderingWithObject:self.savedObject atIndexPath:indexPath];
+                             } else {
+                                 NSLog(@"finishReorderingWithObject:atIndexPath: is not implemented");
+                             }
+                             [self endUpdates];
+                             
+                             // reload the rows that were affected just to be safe
+                             NSMutableArray *visibleRows = [[self indexPathsForVisibleRows] mutableCopy];
+                             [visibleRows removeObject:indexPath];
+                             [self reloadRowsAtIndexPaths:visibleRows withRowAnimation:UITableViewRowAnimationNone];
+                             
+                             self.currentLocationIndexPath = nil;
+                             self.draggingView = nil;
+                             
+                             self.currentGesture = nil;
             }];
     }
 }
@@ -345,7 +352,7 @@
     [self setContentOffset:newOffset];
 
     if (location.y >= 0 && location.y <= self.contentSize.height + 50) {
-        draggingView.center = CGPointMake(self.center.x, location.y);
+        draggingView.frame = [self getDraggingViewFrameByCurrentLocation:location];
     }
 
     [self updateCurrentLocation:gesture];
@@ -357,6 +364,11 @@
     self.currentGesture.enabled = YES;
 
     self.currentGesture = nil;
+}
+
+- (CGRect)getDraggingViewFrameByCurrentLocation:(CGPoint)location
+{
+    return CGRectMake(draggingView.frame.origin.x, location.y - self.draggingShiftY * DRAGGIN_VIEW_SCALE, draggingView.frame.size.width, draggingView.frame.size.height);
 }
 
 @end
