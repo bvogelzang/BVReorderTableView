@@ -154,7 +154,7 @@
             
             // zoom image towards user
             [UIView beginAnimations:@"zoom" context:nil];
-            draggingView.transform = CGAffineTransformMakeScale(1.1, 1.1);
+            draggingView.transform = CGAffineTransformMakeScale((CGFloat)1.1, (CGFloat)1.1);
             draggingView.center = CGPointMake(self.center.x, location.y);
             [UIView commitAnimations];
         }
