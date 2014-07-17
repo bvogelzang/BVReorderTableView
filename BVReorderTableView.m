@@ -107,7 +107,7 @@
     
     NSInteger sections = [self numberOfSections];
     NSInteger rows = 0;
-    for(int i = 0; i < sections; i++) {
+    for(NSInteger i = 0; i < sections; i++) {
         rows += [self numberOfRowsInSection:i];
     }
     
