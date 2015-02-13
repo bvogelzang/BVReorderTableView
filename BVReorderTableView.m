@@ -102,9 +102,9 @@
     CGPoint location = [gesture locationInView:self];
     NSIndexPath *indexPath = [self indexPathForRowAtPoint:location];
     
-    int sections = [self numberOfSections];
+    NSInteger sections = [self numberOfSections];
     int rows = 0;
-    for(int i = 0; i < sections; i++) {
+    for(NSInteger i = 0; i < sections; i++) {
         rows += [self numberOfRowsInSection:i];
     }
     
