@@ -127,7 +127,7 @@
             cell = [self.delegate cellForDraggingAtIndexPath:indexPath];
         }
         if (cell == nil) {
-            [self cellForRowAtIndexPath:indexPath];
+            cell = [self cellForRowAtIndexPath:indexPath];
         }
         self.draggingRowHeight = cell.frame.size.height;
         [cell setSelected:NO animated:NO];
