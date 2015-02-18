@@ -39,6 +39,13 @@
 // object you returned in saveObjectAndInsertBlankRowAtIndexPath:. Simply update the data source so the
 // object is in its new position. You should do any saving/cleanup here.
 - (void)finishReorderingWithObject:(id)object atIndexPath:(NSIndexPath *)indexPath;
+
+@optional
+
+// This method is called when dragging begins. The delegate can return a non-nil object if
+// it wishes to replace the dragged cell with something else.
+- (UITableViewCell *)cellForDraggingAtIndexPath:(NSIndexPath *)indexPath;
+
 @end
 
 @interface BVReorderTableView : UITableView

@@ -122,7 +122,13 @@
     // started
     if (gesture.state == UIGestureRecognizerStateBegan) {
         
-        UITableViewCell *cell = [self cellForRowAtIndexPath:indexPath];
+        UITableViewCell *cell = nil;
+        if ([self.delegate respondsToSelector:@selector(cellForDraggingAtIndexPath:)]) {
+            cell = [self.delegate cellForDraggingAtIndexPath:indexPath];
+        }
+        if (cell == nil) {
+            [self cellForRowAtIndexPath:indexPath];
+        }
         self.draggingRowHeight = cell.frame.size.height;
         [cell setSelected:NO animated:NO];
         [cell setHighlighted:NO animated:NO];
