@@ -254,6 +254,7 @@
     
     NSIndexPath *indexPath  = nil;
     CGPoint location = CGPointZero;
+    BOOL canMove = YES;
     
     // refresh index path
     location  = [gesture locationInView:self];
@@ -263,10 +264,14 @@
         indexPath = [self.delegate tableView:self targetIndexPathForMoveFromRowAtIndexPath:self.initialIndexPath toProposedIndexPath:indexPath];
     }
     
+    if ([self.dataSource respondsToSelector:@selector(canMoveRowFromIndexPath:toIndexPath:)]) {
+        canMove = [self.dataSource canMoveRowFromIndexPath:self.currentLocationIndexPath toIndexPath:indexPath];
+    }
+    
     NSInteger oldHeight = [self rectForRowAtIndexPath:self.currentLocationIndexPath].size.height;
     NSInteger newHeight = [self rectForRowAtIndexPath:indexPath].size.height;
     
-    if (indexPath && ![indexPath isEqual:self.currentLocationIndexPath] && [gesture locationInView:[self cellForRowAtIndexPath:indexPath]].y > newHeight - oldHeight) {
+    if (canMove && indexPath && ![indexPath isEqual:self.currentLocationIndexPath] && [gesture locationInView:[self cellForRowAtIndexPath:indexPath]].y > newHeight - oldHeight) {
         [self beginUpdates];
         [self deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.currentLocationIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         [self insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
