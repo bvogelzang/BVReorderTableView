@@ -83,8 +83,10 @@
 
 
 - (void)initialize {
-    longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
-    [self addGestureRecognizer:longPress];
+    if (!longPress) {
+        longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
+        [self addGestureRecognizer:longPress];
+    }
     
     self.canReorder = YES;
     self.draggingViewOpacity = 1.0;
