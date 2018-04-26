@@ -90,9 +90,12 @@
     self.draggingViewOpacity = 1.0;
 }
 
+- (BOOL)canReorder
+{
+	return longPress.enabled;
+}
 
 - (void)setCanReorder:(BOOL)canReorder {
-    canReorder = canReorder;
     longPress.enabled = canReorder;
 }
 
@@ -102,9 +105,9 @@
     CGPoint location = [gesture locationInView:self];
     NSIndexPath *indexPath = [self indexPathForRowAtPoint:location];
     
-    int sections = [self numberOfSections];
-    int rows = 0;
-    for(int i = 0; i < sections; i++) {
+    NSInteger sections = [self numberOfSections];
+    NSInteger rows = 0;
+    for(NSInteger i = 0; i < sections; i++) {
         rows += [self numberOfRowsInSection:i];
     }
     
@@ -146,12 +149,12 @@
             draggingView.layer.shadowColor = [[UIColor blackColor] CGColor];
             draggingView.layer.shadowOffset = CGSizeMake(0, 0);
             draggingView.layer.shadowRadius = 4.0;
-            draggingView.layer.shadowOpacity = 0.7;
-            draggingView.layer.opacity = self.draggingViewOpacity;
+            draggingView.layer.shadowOpacity = 0.7f;
+            draggingView.layer.opacity = (float)self.draggingViewOpacity;
             
             // zoom image towards user
             [UIView beginAnimations:@"zoom" context:nil];
-            draggingView.transform = CGAffineTransformMakeScale(1.1, 1.1);
+            draggingView.transform = CGAffineTransformMakeScale((CGFloat)1.1, (CGFloat)1.1);
             draggingView.center = CGPointMake(self.center.x, location.y);
             [UIView commitAnimations];
         }
@@ -186,7 +189,7 @@
         CGRect rect = self.bounds;
         // adjust rect for content inset as we will use it below for calculating scroll zones
         rect.size.height -= self.contentInset.top;
-        CGPoint location = [gesture locationInView:self];
+        location = [gesture locationInView:self];
         
         [self updateCurrentLocation:gesture];
         
@@ -209,7 +212,7 @@
     // dropped
     else if (gesture.state == UIGestureRecognizerStateEnded) {
         
-        NSIndexPath *indexPath = self.currentLocationIndexPath;
+        indexPath = self.currentLocationIndexPath;
         
         // remove scrolling CADisplayLink
         [self.scrollDisplayLink invalidate];
@@ -220,10 +223,11 @@
         [UIView animateWithDuration:0.3
                          animations:^{
                              CGRect rect = [self rectForRowAtIndexPath:indexPath];
-                             draggingView.transform = CGAffineTransformIdentity;
-                             draggingView.frame = CGRectOffset(draggingView.bounds, rect.origin.x, rect.origin.y);
+							 self->draggingView.transform = CGAffineTransformIdentity;
+							 self->draggingView.frame = CGRectOffset(self->draggingView.bounds, rect.origin.x, rect.origin.y);
                          } completion:^(BOOL finished) {
-                             [draggingView removeFromSuperview];
+#pragma unused(finished)
+							 [self->draggingView removeFromSuperview];
                              
                              [self beginUpdates];
                              [self deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
@@ -263,8 +267,8 @@
         indexPath = [self.delegate tableView:self targetIndexPathForMoveFromRowAtIndexPath:self.initialIndexPath toProposedIndexPath:indexPath];
     }
     
-    NSInteger oldHeight = [self rectForRowAtIndexPath:self.currentLocationIndexPath].size.height;
-    NSInteger newHeight = [self rectForRowAtIndexPath:indexPath].size.height;
+    NSInteger oldHeight = (NSInteger)round([self rectForRowAtIndexPath:self.currentLocationIndexPath].size.height);
+    NSInteger newHeight = (NSInteger)round([self rectForRowAtIndexPath:indexPath].size.height);
     
     if (indexPath && ![indexPath isEqual:self.currentLocationIndexPath] && [gesture locationInView:[self cellForRowAtIndexPath:indexPath]].y > newHeight - oldHeight) {
         [self beginUpdates];
@@ -283,7 +287,8 @@
     }
 }
 
-- (void)scrollTableWithCell:(NSTimer *)timer {    
+- (void)scrollTableWithCell:(NSTimer *)timer {
+#pragma unused(timer)
     UILongPressGestureRecognizer *gesture = self.longPress;
     CGPoint location  = [gesture locationInView:self];
     
