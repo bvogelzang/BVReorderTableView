@@ -102,9 +102,9 @@
     CGPoint location = [gesture locationInView:self];
     NSIndexPath *indexPath = [self indexPathForRowAtPoint:location];
     
-    int sections = [self numberOfSections];
+    NSInteger sections = [self numberOfSections];
     int rows = 0;
-    for(int i = 0; i < sections; i++) {
+    for(NSInteger i = 0; i < sections; i++) {
         rows += [self numberOfRowsInSection:i];
     }
     
@@ -220,10 +220,10 @@
         [UIView animateWithDuration:0.3
                          animations:^{
                              CGRect rect = [self rectForRowAtIndexPath:indexPath];
-                             draggingView.transform = CGAffineTransformIdentity;
-                             draggingView.frame = CGRectOffset(draggingView.bounds, rect.origin.x, rect.origin.y);
+                             self.draggingView.transform = CGAffineTransformIdentity;
+                             self.draggingView.frame = CGRectOffset(self.draggingView.bounds, rect.origin.x, rect.origin.y);
                          } completion:^(BOOL finished) {
-                             [draggingView removeFromSuperview];
+                             [self.draggingView removeFromSuperview];
                              
                              [self beginUpdates];
                              [self deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
