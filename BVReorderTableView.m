@@ -220,10 +220,10 @@
         [UIView animateWithDuration:0.3
                          animations:^{
                              CGRect rect = [self rectForRowAtIndexPath:indexPath];
-                             draggingView.transform = CGAffineTransformIdentity;
-                             draggingView.frame = CGRectOffset(draggingView.bounds, rect.origin.x, rect.origin.y);
+                             self.draggingView.transform = CGAffineTransformIdentity;
+                             self.draggingView.frame = CGRectOffset(self.draggingView.bounds, rect.origin.x, rect.origin.y);
                          } completion:^(BOOL finished) {
-                             [draggingView removeFromSuperview];
+                             [self.draggingView removeFromSuperview];
                              
                              [self beginUpdates];
                              [self deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
